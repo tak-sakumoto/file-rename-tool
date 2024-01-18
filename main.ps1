@@ -29,15 +29,15 @@ for ($i = 0; $i -lt $srcFiles.Count; $i++) {
     $destFile = $destFiles[$i]
 
     # Check if the file exists
-    if (Test-Path $srcFile) {
-        # Rename the file
-        Rename-Item -Path $srcFile -NewName $destFile
-        Write-Host "Renamed: $srcFile -> $destFile"
-    }
-    else {
+    if (!(Test-Path $srcFile)) {
         # Warn the user that the file doesn't exist
         Write-Host "WARNING: $srcFile does not exist"
-    }    
+        continue
+    }
+    
+    # Rename the file
+    Rename-Item -Path $srcFile -NewName $destFile
+    Write-Host "Renamed: $srcFile -> $destFile"
 }
 
 Write-Host "Done."
