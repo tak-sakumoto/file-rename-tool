@@ -3,6 +3,9 @@ param (
     $listCsv
 )
 
+# Include other scripts
+. .\Get-VariablesFromCsv.ps1
+
 # Check if the $listCsv parameter is empty
 if ([string]::IsNullOrEmpty($listCsv)) {
     # Warn the user that the CSV file parameter is empty
@@ -17,12 +20,8 @@ if (!(Test-Path $listCsv)) {
     exit 1
 }
 
-# Read the CSV file
-$listData = Import-Csv $listCsv
-
-# Assign values to variables
-$srcFiles = $listData.src
-$destFiles = $listData.dest
+# Get the source and destination files
+$srcFiles, $destFiles = Get-VariablesFromCsv $listCsv
 
 # Loop for each file
 for ($i = 0; $i -lt $srcFiles.Count; $i++) {
