@@ -4,9 +4,9 @@ param (
 )
 
 # Include other scripts
-. .\Get-VariablesFromCsv.ps1
-. .\Rename-FileInSameDir.ps1
-. .\Copy-FileWithRenaming.ps1
+. "$PSScriptRoot\Get-VariablesFromCsv.ps1"
+. "$PSScriptRoot\Rename-FileInSameDir.ps1"
+. "$PSScriptRoot\Copy-FileWithRenaming.ps1"
 
 # Check if the $listCsv parameter is empty
 if ([string]::IsNullOrEmpty($listCsv)) {
