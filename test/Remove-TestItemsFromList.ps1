@@ -4,9 +4,7 @@ param (
 )
 
 # Include other scripts
-. .\Get-VariablesFromCsv.ps1
-. .\Rename-FileInSameDir.ps1
-. .\Copy-FileWithRenaming.ps1
+. $PSScriptRoot\..\src\Get-VariablesFromCsv.ps1
 
 # Check if the $listCsv parameter is empty
 if ([string]::IsNullOrEmpty($listCsv)) {
@@ -27,30 +25,31 @@ $srcFiles, $newNames, $destDirs = Get-VariablesFromCsv $listCsv
 
 # Loop for each source file
 for ($i = 0; $i -lt $srcFiles.Count; $i++) {
-    $srcFile = $srcFiles[$i]
+    $srcFile = $srcFiles[$i]    
     $newName = $newNames[$i]
     $destDir = $destDirs[$i]
 
-    # Check if the file exists
-    if (!(Test-Path $srcFile)) {
-        # Warn the user that the file doesn't exist
-        Write-Host "WARNING: $srcFile does not exist"
-        continue
-    }
+    $renamedFile = ""
 
-    # If the destination directory is not specified,
-    # rename the file in the same directory
+    # Check if $destDir is valid
     if ([string]::IsNullOrEmpty($destDir)) {
-        Rename-FileInSameDir $srcFile $newName
+        # Make a renamed file path
+        $renamedFile = Join-Path -Path (Split-Path -Path $srcFile -Parent) $newName 
     }
-
-    # If the destination directory is specified,
-    # copy the file with renaming to the destination directory
     else {
-        Copy-FileWithRenaming $srcFile $newName $destDir
-    }    
+        # Make a renamed file path
+        $renamedFile = Join-Path -Path $destDir -ChildPath $newName 
+    }
+    
+    # Run the same below process for $srcFile and $renamedFile
+    foreach ($filePath in $srcFile, $renamedFile) {
+        # Check if $filePath is exists
+        if (!(Test-Path $filePath)) {
+            continue
+        }
+        # Delete a file at the path $filePath
+        Remove-Item -Path $filePath -Force -Recurse
+    }
 }
-
-Write-Host "Done."
 
 exit 0

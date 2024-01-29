@@ -1,0 +1,5 @@
+src,new_name,dest
+../test/folder_a/file_000.txt,test_file_000.txt,
+../test/folder_a/folder_000,test_folder_000,
+../test/folder_a/file_001.txt,test_file_001.txt,../test/folder_b
+../test/folder_a/folder_001,test_folder_001,../test/folder_b
