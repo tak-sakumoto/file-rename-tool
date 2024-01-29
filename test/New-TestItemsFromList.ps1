@@ -4,7 +4,7 @@ param (
 )
 
 # Include other scripts
-. ..\src\Get-VariablesFromCsv.ps1
+. $PSScriptRoot\..\src\Get-VariablesFromCsv.ps1
 
 # Check if the $listCsv parameter is empty
 if ([string]::IsNullOrEmpty($listCsv)) {
